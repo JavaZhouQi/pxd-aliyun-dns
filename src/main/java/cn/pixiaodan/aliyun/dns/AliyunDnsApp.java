@@ -1,6 +1,7 @@
 package cn.pixiaodan.aliyun.dns;
 
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 
@@ -37,7 +38,6 @@ public class AliyunDnsApp {
     }
 
     public static void main(String[] args) {
-
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -89,9 +89,11 @@ public class AliyunDnsApp {
             updateDomainRecordRequest.setType(describeDomainRecordsResponseBodyDomainRecordsRecord.getType());
             updateDomainRecordRequest.setValue(ip);
             try {
+                log.info("修改ip请求参数：{}", JSONUtil.toJsonStr(updateDomainRecordRequest));
                 UpdateDomainRecordResponse updateDomainRecordResponse = client.updateDomainRecord(updateDomainRecordRequest);
+                log.info("修改ip结果：{}", JSONUtil.toJsonStr(updateDomainRecordResponse));
             } catch (Exception e) {
-                log.debug("调用域名解析修改错误", e);
+                log.error("调用域名解析修改错误", e);
             }
         }
         // ip替换
